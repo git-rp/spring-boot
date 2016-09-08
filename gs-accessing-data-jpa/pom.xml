@@ -6,7 +6,7 @@
 	<artifactId>gs-accessing-data-jpa</artifactId>
 	<version>0.1.0</version>
 	<packaging>jar</packaging>
-
+ 
 	<name>gs-accessing-data-jpa</name>
 	<url>http://maven.apache.org</url>
 	<parent>
