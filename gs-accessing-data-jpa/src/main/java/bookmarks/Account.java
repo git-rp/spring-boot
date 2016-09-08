@@ -11,14 +11,25 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Account {
-
+public class Account { 
+    @JsonIgnore
+    private String password;
+    private String username;
     @OneToMany(mappedBy = "account")
-    private Set<Bookmark> bookmarks = new HashSet<Bookmark>();
-
+    private Set<Bookmark> bookmarks = new HashSet<>();
     @Id
     @GeneratedValue
     private Long id;
+    
+    
+    public Account(String name, String password) {
+        this.username = name;
+        this.password = password;
+    }
+
+    Account() { // jpa only
+    }
+  
 
     public Set<Bookmark> getBookmarks() {
         return bookmarks;
@@ -36,15 +47,5 @@ public class Account {
         return username;
     }
 
-    @JsonIgnore
-    public String password;
-    public String username;
-
-    public Account(String name, String password) {
-        this.username = name;
-        this.password = password;
-    }
-
-    Account() { // jpa only
-    }
+   
 }

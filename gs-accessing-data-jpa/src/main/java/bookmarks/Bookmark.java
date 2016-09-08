@@ -17,7 +17,8 @@ public class Bookmark
 	@Id
 	@GeneratedValue
 	private Long id;
-
+	private String uri;
+	private String description;
 	Bookmark()
 	    { // jpa only
 	    }
@@ -28,9 +29,7 @@ public class Bookmark
 		this.description = description;
 		this.account = account;
 	    }
-
-	public String uri;
-	public String description;
+	
 
 	public Account getAccount() {
 	    return account;

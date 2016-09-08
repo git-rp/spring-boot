@@ -7,17 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resources;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import bookmarks.exception.UserNotFoundException;
+import bookmarks.hello.HelloWorld;
 import bookmarks.resource.BookmarkResource;
 
 @RestController
@@ -28,6 +24,8 @@ public class AccountController
 	AccountRepository accountRepository;
 	@Autowired
 	BookmarkRepository bookmarkRepository;
+	@Autowired 
+	HelloWorld helloWorld;
 
 	@RequestMapping("/accounts")
 	Account addAccount() {
@@ -38,6 +36,7 @@ public class AccountController
 	    Bookmark bookmark1 = new Bookmark(account, "http://bookmark.com/2/", "desc2");
 	    bookmarkRepository.save(bookmark);
 	    bookmarkRepository.save(bookmark1);
+	    helloWorld.printHelloWorld("This is demo.....");
 	    return account;
 	}
 
@@ -61,14 +60,14 @@ public class AccountController
 	public  Resources<BookmarkResource> readBookmarks(@PathVariable String userId) {
 		this.validateUser(userId);
 		List<Bookmark> bookmarkLst = bookmarkRepository.findByAccountUsername(userId);
-		List<BookmarkResource> bookmarkResources = new ArrayList<BookmarkResource>(bookmarkLst.size());
+		List<BookmarkResource> bookmarkResources = new ArrayList<>(bookmarkLst.size());
 		for(Bookmark bm : bookmarkLst)
 		    {
 			BookmarkResource bookmarkResource = new BookmarkResource(bm);
 			bookmarkResources.add(bookmarkResource);
 		    }
 		
-		return new Resources<BookmarkResource>(bookmarkResources);
+		return new Resources<>(bookmarkResources);
 	}
 	
 	
@@ -84,7 +83,7 @@ public class AccountController
 	private void validateUser(String userId) {
 	    List<Account> lstAcc=accountRepository.findByUsername(userId);
 	    log.info(" test "+lstAcc);
-	    if (lstAcc.size()<=0)
+	    if (lstAcc.isEmpty())
 		{
 		    throw new UserNotFoundException(userId);
 		}
